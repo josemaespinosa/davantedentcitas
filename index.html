@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dental Clinic</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <!-- Puedes cambiarlo por tu logo -->
+      <div class="logo">
+        <img src="img/logo.png" alt="Logo DavanteDent"
+      <div class="brand-text">
+        <div class="brand-title">DENTAL CLINIC</div>
+        <div class="brand-sub">Appointments</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- HOME -->
+    <section id="view-home" class="view is-active">
+      <div class="panel">
+        <div class="home-actions">
+          <button id="btn-go-form" class="btn btn-light">Make appointment</button>
+          <button id="btn-go-list" class="btn btn-light">Check appointments</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORM -->
+    <section id="view-form" class="view">
+      <div class="card">
+        <h2 class="card-title">Appt. Date:</h2>
+
+        <form id="appointment-form" class="form">
+          <div class="row">
+            <label class="label">
+              <span class="label-text">Date</span>
+              <input id="apptDate" type="date" required />
+            </label>
+          </div>
+
+          <h3 class="section-title">Patient Info:</h3>
+
+          <div class="grid-2">
+            <label class="label">
+              <span class="label-text">Name</span>
+              <input id="name" type="text" required />
+            </label>
+
+            <label class="label">
+              <span class="label-text">Surname</span>
+              <input id="surname" type="text" required />
+            </label>
+          </div>
+
+          <div class="grid-2">
+            <label class="label">
+              <span class="label-text">N-ID</span>
+              <input id="nid" type="text" placeholder="12345678A" required />
+              <small class="hint">8 numbers and 1 letter</small>
+            </label>
+
+            <label class="label">
+              <span class="label-text">Number</span>
+              <input id="phone" type="tel" placeholder="600123123" required />
+            </label>
+          </div>
+
+          <div class="grid-2">
+            <label class="label">
+              <span class="label-text">Birth date</span>
+              <input id="birthDate" type="date" required />
+            </label>
+
+            <label class="label">
+              <span class="label-text">Observations</span>
+              <input id="info" type="text" placeholder="Add things of interest..." />
+            </label>
+          </div>
+
+          <div class="actions">
+            <button type="button" id="btn-cancel" class="btn btn-ghost">Back</button>
+            <button type="submit" class="btn btn-dark">Confirm the appointment</button>
+          </div>
+
+          <p id="form-msg" class="msg"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- LIST -->
+    <section id="view-list" class="view">
+      <div class="table-card">
+        <div class="table-head">
+          <div class="table-title">Appointments</div>
+          <div class="table-actions">
+            <button id="btn-export" class="btn btn-blue">Download CSV</button>
+            <button id="btn-new" class="btn btn-green">Add new</button>
+            <button id="btn-back-home" class="btn btn-ghost">Back</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table" id="appt-table">
+            <thead>
+              <tr>
+                <th>NID</th>
+                <th>FULL NAME</th>
+                <th>APPT. DATE</th>
+                <th>PHONE</th>
+                <th>INFO</th>
+                <th>EDIT</th>
+                <th>DELETE</th>
+              </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+
+        <p id="list-empty" class="empty">No appointments yet.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
