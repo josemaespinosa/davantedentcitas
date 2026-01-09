@@ -13,13 +13,8 @@ function getCookie(nombre) {
   }
   return null;
 }
-
-/***********************
- *  POO: Clase Cita
- ***********************/
 class Cita {
   constructor({ fechaCita, horaCita, nombre, apellidos, dni, telefono, fechaNacimiento, observaciones }) {
-    // Identificador único: instante de grabación + un extra para evitar colisión
     this.id = `${Date.now()}_${Math.floor(Math.random() * 100000)}`;
     this.fechaCita = fechaCita;
     this.horaCita = horaCita;
@@ -32,9 +27,6 @@ class Cita {
   }
 }
 
-/***********************
- *  Selectores
- ***********************/
 const vistas = {
   home: document.getElementById("view-home"),
   form: document.getElementById("view-form"),
@@ -64,9 +56,6 @@ const observaciones = document.getElementById("observaciones");
 
 const tbody = document.getElementById("tbody-citas");
 
-/***********************
- *  Almacenamiento en cookie
- ***********************/
 const COOKIE_NAME = "citasDavanteDent";
 const COOKIE_DAYS = 30;
 
@@ -84,9 +73,6 @@ function guardarCitas(lista) {
   setCookie(COOKIE_NAME, JSON.stringify(lista), COOKIE_DAYS);
 }
 
-/***********************
- *  Vistas
- ***********************/
 function showView(which) {
   Object.values(vistas).forEach(v => v.classList.remove("is-active"));
   vistas[which].classList.add("is-active");
@@ -101,9 +87,7 @@ function limpiarFormulario() {
   limpiarErrores();
 }
 
-/***********************
- *  Validación
- ***********************/
+
 function normalizarDni(valor) {
   return (valor || "").trim().toUpperCase();
 }
@@ -160,7 +144,7 @@ function validarFormulario() {
 
   if (!fechaNacimiento.value) { setError(fechaNacimiento, "err-fechaNacimiento", "Selecciona la fecha de nacimiento."); ok = false; }
 
-  // Observaciones no obligatorias, pero si hay, limita un poco
+
   if (observaciones.value.length > 120) {
     setError(observaciones, "err-observaciones", "Máximo 120 caracteres.");
     ok = false;
@@ -169,7 +153,6 @@ function validarFormulario() {
   return ok;
 }
 
-// Validación “por eventos” (al escribir / cambiar)
 [
   [fechaCita, "change", () => (fechaCita.value ? clearError(fechaCita, "err-fechaCita") : null)],
   [horaCita, "change", () => (horaCita.value ? clearError(horaCita, "err-horaCita") : null)],
@@ -189,13 +172,9 @@ function validarFormulario() {
   [observaciones, "input", () => (observaciones.value.length <= 120 ? clearError(observaciones, "err-observaciones") : null)],
 ].forEach(([el, ev, fn]) => el.addEventListener(ev, fn));
 
-/***********************
- *  Tabla
- ***********************/
 function renderTabla() {
   const lista = cargarCitas();
 
-  // Si no hay citas: mostrar fila “Dato vacío”
   if (lista.length === 0) {
     tbody.innerHTML = `
       <tr>
@@ -224,16 +203,12 @@ function renderTabla() {
   });
 }
 
-/***********************
- *  CRUD
- ***********************/
 function cargarCitaEnFormularioPorId(id) {
-  // Importante: cargar desde cookie (no desde HTML)
   const lista = cargarCitas();
   const cita = lista.find(c => c.id === id);
   if (!cita) return;
 
-  citaId.value = cita.id;            // oculto
+  citaId.value = cita.id;            
   fechaCita.value = cita.fechaCita;
   horaCita.value = cita.horaCita;
   nombre.value = cita.nombre;
@@ -249,7 +224,6 @@ function cargarCitaEnFormularioPorId(id) {
 }
 
 function existeDuplicada(lista, data, idActual) {
-  // Evita duplicado: mismo DNI + misma fecha + misma hora
   return lista.some(c =>
     c.id !== idActual &&
     c.dni === data.dni &&
@@ -257,10 +231,6 @@ function existeDuplicada(lista, data, idActual) {
     c.horaCita === data.horaCita
   );
 }
-
-/***********************
- *  Export CSV
- ***********************/
 function exportarCSV() {
   const lista = cargarCitas();
   if (lista.length === 0) return;
@@ -293,9 +263,6 @@ function exportarCSV() {
   URL.revokeObjectURL(url);
 }
 
-/***********************
- *  Eventos UI
- ***********************/
 btnGoForm.addEventListener("click", () => {
   limpiarFormulario();
   showView("form");
@@ -316,7 +283,6 @@ btnNueva.addEventListener("click", () => {
 
 btnExportar.addEventListener("click", exportarCSV);
 
-// Submit: crear o editar sin perder lo introducido si hay errores
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   msgForm.textContent = "";
@@ -348,12 +314,11 @@ form.addEventListener("submit", (e) => {
   }
 
   if (!idActual) {
-    // Crear
     const nueva = new Cita(data);
     lista.push(nueva);
     guardarCitas(lista);
   } else {
-    // Editar (mantener mismo id)
+  
     const idx = lista.findIndex(c => c.id === idActual);
     if (idx === -1) {
       msgForm.textContent = "No se encontró la cita para editar.";
@@ -368,7 +333,6 @@ form.addEventListener("submit", (e) => {
   showView("list");
 });
 
-// Click en tabla: editar / borrar
 tbody.addEventListener("click", (e) => {
   const idEdit = e.target?.dataset?.edit;
   const idDel = e.target?.dataset?.del;
@@ -388,7 +352,5 @@ tbody.addEventListener("click", (e) => {
   }
 });
 
-/***********************
- *  Inicio: cargar tabla si entras directo al listado
- ***********************/
 showView("home");
+
