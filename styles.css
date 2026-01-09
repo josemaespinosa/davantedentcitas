@@ -167,7 +167,6 @@ body{
   text-align: center;
 }
 
-/* Validación visual */
 .input-error{ border-color: #ef4444 !important; }
 .error-text{
   display:block;
@@ -176,3 +175,4 @@ body{
   font-size: 11px;
   color: #b91c1c;
 }
+
